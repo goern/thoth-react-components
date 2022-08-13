@@ -7,10 +7,6 @@ import { PythonChooser } from "./PythonChooser";
 export default {
   title: "ThothStation/PythonChooser",
   component: PythonChooser,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
 } as ComponentMeta<typeof PythonChooser>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
@@ -18,8 +14,17 @@ const Template: ComponentStory<typeof PythonChooser> = (args) => (
   <PythonChooser {...args} />
 );
 
-export const Small = Template.bind({});
-Small.args = {
-  size: "small",
-  label: "PythonChooser",
+export const ThreeEight = Template.bind({});
+ThreeEight.args = {
+  versions: ["3.8"],
+};
+
+export const ThreeEightAndThreeSeven = Template.bind({});
+ThreeEightAndThreeSeven.args = {
+  versions: ["3.8", "3.7"],
+};
+
+export const None = Template.bind({});
+None.args = {
+  versions: [],
 };

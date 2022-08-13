@@ -1,47 +1,60 @@
 import React from "react";
+import { Dropdown, DropdownToggle, DropdownItem } from "@patternfly/react-core";
+
 import "./pythonChooser.css";
 
 interface PythonChooserProps {
   /**
-   * What background color to use
+   * PythonChooser supported Python Versions
    */
-  backgroundColor?: string;
-  /**
-   * How large should the button be?
-   */
-  size?: "small" | "medium";
-  /**
-   * PythonChooser contents
-   */
-  label: string;
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void;
+  versions: string[];
 }
 
 /**
- * Primary UI component for user interaction
+ * Primary UI component for choosing a Python Version that is an environment supported by Thoth
  */
-export const PythonChooser = ({
-  backgroundColor,
-  size = "medium",
-  label,
-  ...props
-}: PythonChooserProps) => {
-  const mode = "storybook-pythonChooser--primary";
+export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isFetching, setFetching] = React.useState(true);
+
+  const onToggle = (isOpen: boolean) => {
+    setIsOpen(isOpen);
+  };
+
+  const onFocus = () => {
+    const element = document.getElementById("pf-thoth-pythonChooser-dropdown");
+    if (element) {
+      element.focus();
+    }
+  };
+
+  const onSelect = () => {
+    setIsOpen(false);
+    onFocus();
+  };
+
+  const dropdownItems = [
+    <DropdownItem key="link" tooltip="Tooltip for enabled link">
+      Link
+    </DropdownItem>,
+  ];
+
   return (
-    <button
-      type="button"
-      className={[
-        "storybook-pythonChooser",
-        `storybook-pythonChooser--${size}`,
-        mode,
-      ].join(" ")}
-      style={{ backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
+    <div>
+      <p className="pf-thoth-pythonChooser">Python</p>&nbsp;
+      <Dropdown
+        onSelect={onSelect}
+        toggle={
+          <DropdownToggle
+            id="pf-thoth-pythonChooser-dropdown"
+            onToggle={onToggle}
+          >
+            Dropdown
+          </DropdownToggle>
+        }
+        isOpen={isOpen}
+        dropdownItems={dropdownItems}
+      />
+    </div>
   );
 };

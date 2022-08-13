@@ -1,4 +1,4 @@
-.storybook-pythonChooser {
+.pf-thoth-pythonChooser {
   font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   border: 0;
@@ -7,19 +7,19 @@
   display: inline-block;
   line-height: 1;
 }
-.storybook-pythonChooser--primary {
+.pf-thoth-pythonChooser--primary {
   color: white;
   background-color: #1ea7fd;
 }
-.storybook-pythonChooser--small {
+.pf-thoth-pythonChooser--small {
   font-size: 12px;
   padding: 10px 16px;
 }
-.storybook-pythonChooser--medium {
+.pf-thoth-pythonChooser--medium {
   font-size: 14px;
   padding: 11px 20px;
 }
-.storybook-pythonChooser--large {
+.pf-thoth-pythonChooser--large {
   font-size: 16px;
   padding: 12px 24px;
 }
