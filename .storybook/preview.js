@@ -9,8 +9,6 @@ export const parameters = {
     },
   },
   darkMode: {
-    dark: { ...themes.dark, appBg: "black" },
-    light: { ...themes.normal, appBg: "red" },
     current: "dark",
   },
 };

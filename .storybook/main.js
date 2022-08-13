@@ -7,7 +7,6 @@ module.exports = {
     "@storybook/addon-interactions",
     "@storybook/addon-links",
     "@storybook/preset-create-react-app",
-    "storybook-dark-mode",
   ],
   framework: "@storybook/react",
   core: {

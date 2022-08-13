@@ -24,7 +24,7 @@ ThreeEightAndThreeSeven.args = {
   versions: ["3.8", "3.7"],
 };
 
-export const None = Template.bind({});
-None.args = {
+export const Zero = Template.bind({});
+Zero.args = {
   versions: [],
 };

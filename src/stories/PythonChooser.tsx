@@ -1,7 +1,14 @@
-import React from "react";
-import { Dropdown, DropdownToggle, DropdownItem } from "@patternfly/react-core";
+import React, { useEffect } from "react";
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
+  DropdownItemProps,
+} from "@patternfly/react-core";
 
 import "./pythonChooser.css";
+import "../../node_modules/@patternfly/patternfly/patternfly.min.css";
 
 interface PythonChooserProps {
   /**
@@ -33,11 +40,22 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
     onFocus();
   };
 
-  const dropdownItems = [
-    <DropdownItem key="link" tooltip="Tooltip for enabled link">
-      Link
-    </DropdownItem>,
-  ];
+  var dropdownItems: DropdownItemProps[] = [];
+
+  if (versions.length > 0) {
+    versions.forEach((version: string) => {
+      dropdownItems.push(<DropdownItem key={version}>{version}</DropdownItem>);
+    });
+    useEffect(() => {
+      setFetching(false);
+    }, []); // 👈️ empty dependencies array
+  } else {
+    dropdownItems = [
+      <DropdownItem key="loading">
+        fetching versions from Thoth Guidance Service...
+      </DropdownItem>,
+    ];
+  }
 
   return (
     <div>
@@ -49,7 +67,7 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
             id="pf-thoth-pythonChooser-dropdown"
             onToggle={onToggle}
           >
-            Dropdown
+            version
           </DropdownToggle>
         }
         isOpen={isOpen}
