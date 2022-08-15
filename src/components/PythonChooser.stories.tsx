@@ -12,10 +12,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof PythonChooser> = (args) => {
-  const [versions, setVersions] = React.useState(args.versions || []);
-  return (
-    <PythonChooser {...args} versions={versions} setVersions={setVersions} />
-  );
+  return <PythonChooser {...args} />;
+};
+
+export const NoVersionProdived = Template.bind({});
+NoVersionProdived.args = {
+  versions: [],
 };
 
 export const ThreeEight = Template.bind({});
@@ -26,13 +28,6 @@ ThreeEight.args = {
 export const ThreeEightAndThreeSeven = Template.bind({});
 ThreeEightAndThreeSeven.args = {
   versions: ["3.8", "3.7"],
-};
-
-/** This story passes no versions as an argument, the component will get them through the Thoth API
- */
-export const Zero = Template.bind({});
-Zero.args = {
-  versions: [],
 };
 
 export const ThreeEightSelected = Template.bind({});
