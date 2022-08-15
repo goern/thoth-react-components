@@ -10,7 +10,7 @@ import {
 import "./pythonChooser.css";
 import "../../node_modules/@patternfly/patternfly/patternfly.min.css";
 import { getPythonEnvironments } from "./ThothAPI";
-import { version } from "os";
+import userEvent from "@testing-library/user-event";
 
 interface PythonChooserProps {
   /**
@@ -24,7 +24,7 @@ interface PythonChooserProps {
  */
 export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isFetching, setFetching] = React.useState(true);
+  const [isFetching, setFetching] = React.useState(false);
   const [selectedVersion, setSelectedVersion] =
     React.useState("<choose version>");
   let cancelled = false;
@@ -46,10 +46,11 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
     onFocus();
   };
 
-  const getVersions = () => {
-    return getPythonEnvironments().then(() => {
+  const getVersions = (): Promise<string[] | undefined> => {
+    return getPythonEnvironments().then((vs) => {
       if (cancelled) return;
       setFetching(false);
+      return vs;
     });
   };
 
@@ -62,6 +63,21 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
 
   var dropdownItems: DropdownItemProps[] = [];
 
+  if (versions.length === 0) {
+    if (!isFetching) {
+      setFetching(true);
+
+      getVersions()
+        .catch(errorCatch)
+        .then((result) => {
+          if (result !== undefined) {
+            //   versions = result; // FIXME  how to update the prop? or state?
+            setFetching(false);
+          }
+        });
+    }
+  }
+
   if (versions.length > 0) {
     console.log(versions);
     console.log(selectedVersion);
@@ -69,15 +85,6 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
     versions.forEach((version: string) => {
       dropdownItems.push(<DropdownItem key={version}>{version}</DropdownItem>);
     });
-    // https://bobbyhadz.com/blog/react-too-many-re-renders-react-limits-the-number
-    useEffect(() => {
-      setFetching(false);
-    }, []); // 👈️ empty dependencies array
-  } else {
-    dropdownItems = []; // TODO transform what we got from the API into a DropdownItemProps array
-    getVersions().catch(errorCatch);
-    console.log(versions);
-    console.log(selectedVersion);
   }
 
   return (

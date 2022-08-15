@@ -1,11 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { screen, userEvent } from "@storybook/testing-library";
 
 import { PythonChooser } from "./PythonChooser";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "ThothStation/PythonChooser",
+  title: "Thoth React/PythonChooser",
   component: PythonChooser,
 } as ComponentMeta<typeof PythonChooser>;
 
@@ -24,7 +25,17 @@ ThreeEightAndThreeSeven.args = {
   versions: ["3.8", "3.7"],
 };
 
+/** This story passes no versions as an argument, the component will get them through the Thoth API
+ */
 export const Zero = Template.bind({});
 Zero.args = {
   versions: [],
+};
+
+export const ThreeEightSelected = Template.bind({});
+ThreeEightSelected.args = {
+  versions: ["3.8", "3.7"],
+};
+ThreeEightSelected.play = async () => {
+  // TODO
 };
