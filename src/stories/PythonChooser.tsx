@@ -25,7 +25,8 @@ interface PythonChooserProps {
 export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFetching, setFetching] = React.useState(true);
-  const [selectedVersion, setSelectedVersion] = React.useState("");
+  const [selectedVersion, setSelectedVersion] =
+    React.useState("<choose version>");
   let cancelled = false;
 
   const onToggle = (isOpen: boolean) => {
@@ -41,6 +42,7 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
 
   const onSelect = () => {
     setIsOpen(false);
+    setSelectedVersion("3.8"); // FIXME hardcoded for now
     onFocus();
   };
 
@@ -72,11 +74,7 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
       setFetching(false);
     }, []); // 👈️ empty dependencies array
   } else {
-    dropdownItems = [
-      <DropdownItem key="loading">
-        fetching versions from Thoth Guidance Service...
-      </DropdownItem>,
-    ];
+    dropdownItems = []; // TODO transform what we got from the API into a DropdownItemProps array
     getVersions().catch(errorCatch);
     console.log(versions);
     console.log(selectedVersion);
@@ -93,7 +91,7 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
             id="pf-thoth-pythonChooser-dropdown"
             onToggle={onToggle}
           >
-            {"fetching..." ? isFetching : selectedVersion}
+            {isFetching ? "fetching..." : selectedVersion}
           </DropdownToggle>
         }
         isOpen={isOpen}
