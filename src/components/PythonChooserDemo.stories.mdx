@@ -1,6 +1,10 @@
 import { Meta } from "@storybook/addon-docs";
 
-<Meta title="Thoth React/Introduction" />
+import { Form, FormGroup, Button } from "@patternfly/react-core";
+
+import { PythonChooser } from "./PythonChooser.tsx";
+
+<Meta title="Thoth React/PythonChooser/Demo" />
 
 <style>
   {`
@@ -106,8 +110,18 @@ import { Meta } from "@storybook/addon-docs";
   `}
 </style>
 
-# Welcome to Thoth's Storybook
+# Demo Time!
 
-Browse example stories now by navigating to them in the sidebar.
-View their code in the `stories` directory to learn how they work.
-We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
+Here is a short demo of the PythonChooser, it will fetch the List of avaiable Python Environments from
+Thoth Guidance Service's API at https://khemenu.thoth-station.ninja/api/v1/ui/#/Environments/list_python_environments
+
+<Form>
+  <FormGroup label="Base Image" isRequired fieldId="simple-form-base-image">
+    <PythonChooser versions={[]} />
+  </FormGroup>
+
+  <ActionGroup>
+    <Button variant="primary">Submit</Button>
+    <Button variant="link">Cancel</Button>
+  </ActionGroup>
+</Form>

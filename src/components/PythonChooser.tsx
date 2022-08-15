@@ -39,7 +39,6 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
 
   const onSelect = () => {
     setIsOpen(false);
-    setSelectedVersion("3.8"); // FIXME hardcoded for now
     onFocus();
   };
 
@@ -59,7 +58,6 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
     <div>
       <p className="pf-thoth-pythonChooser">Python</p>&nbsp;
       <Dropdown
-        onChange={(value) => console.log("change!", value)}
         onSelect={onSelect}
         toggle={
           <DropdownToggle
