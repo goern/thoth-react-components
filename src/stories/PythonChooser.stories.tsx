@@ -11,9 +11,12 @@ export default {
 } as ComponentMeta<typeof PythonChooser>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof PythonChooser> = (args) => (
-  <PythonChooser {...args} />
-);
+const Template: ComponentStory<typeof PythonChooser> = (args) => {
+  const [versions, setVersions] = React.useState(args.versions || []);
+  return (
+    <PythonChooser {...args} versions={versions} setVersions={setVersions} />
+  );
+};
 
 export const ThreeEight = Template.bind({});
 ThreeEight.args = {

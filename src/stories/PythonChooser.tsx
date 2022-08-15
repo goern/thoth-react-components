@@ -17,12 +17,17 @@ interface PythonChooserProps {
    * PythonChooser supported Python Versions
    */
   versions: string[];
+  setVersions: (versions: string[]) => void;
 }
 
 /**
  * Primary UI component for choosing a Python Version that is an environment supported by Thoth
  */
-export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
+export const PythonChooser = ({
+  versions,
+  setVersions,
+  ...props
+}: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFetching, setFetching] = React.useState(false);
   const [selectedVersion, setSelectedVersion] =
@@ -71,7 +76,7 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
         .catch(errorCatch)
         .then((result) => {
           if (result !== undefined) {
-            //   versions = result; // FIXME  how to update the prop? or state?
+            setVersions(result);
             setFetching(false);
           }
         });
