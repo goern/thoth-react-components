@@ -23,8 +23,9 @@ interface PythonChooserProps {
  */
 export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedVersion, setSelectedVersion] =
-    React.useState("<choose version>");
+  const [selectedVersion, setSelectedVersion] = React.useState(
+    "no versions available"
+  );
 
   const onToggle = (isOpen: boolean) => {
     setIsOpen(isOpen);
@@ -44,15 +45,17 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
 
   var dropdownItems: DropdownItemProps[] = [];
 
-  if (versions.length > 0) {
+  useEffect(() => {
+    console.log("versions", versions);
     versions.forEach((version: string) => {
       dropdownItems.push(<DropdownItem key={version}>{version}</DropdownItem>);
-    });
-  } else {
-    useEffect(() => {
+    }); // FIXME this is not updating the rendered form?!
+    if (versions.length == 0) {
       setSelectedVersion("no versions available");
-    }, []);
-  }
+    } else {
+      setSelectedVersion("<choose version>");
+    }
+  }, [versions]);
 
   return (
     <div>
