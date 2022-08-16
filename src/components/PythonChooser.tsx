@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dropdown,
   DropdownToggle,
@@ -8,8 +8,9 @@ import {
 } from "@patternfly/react-core";
 
 import "./pythonChooser.css";
+import { getPythonVersions } from "./ThothGuidanceService";
+
 import "../../node_modules/@patternfly/patternfly/patternfly.min.css";
-import userEvent from "@testing-library/user-event";
 
 interface PythonChooserProps {
   /**
@@ -23,9 +24,22 @@ interface PythonChooserProps {
  */
 export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isLoadingPythonVersions, setLoadingPythonVersions] = useState(false);
+  const [supportedPythonVersions, setSupportedPythonVersions] = useState<
+    string[]
+  >([]);
   const [selectedVersion, setSelectedVersion] = React.useState(
     "no versions available"
   );
+  const getPythonVersionsFromThothService = async () => {
+    console.log("getPythonVersionsFromThothService: loading data from API");
+    setLoadingPythonVersions(true);
+    const _versions = await getPythonVersions();
+    setSupportedPythonVersions(_versions);
+    console.log("supportedPythonVersions from API", _versions);
+    console.log("supportedPythonVersions in state", versions);
+    setLoadingPythonVersions(false);
+  };
 
   const onToggle = (isOpen: boolean) => {
     setIsOpen(isOpen);
@@ -46,10 +60,14 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   var dropdownItems: DropdownItemProps[] = [];
 
   useEffect(() => {
+    getPythonVersionsFromThothService();
+  }, []);
+
+  useEffect(() => {
     console.log("versions", versions);
-    versions.forEach((version: string) => {
+    versions.map((version) => {
       dropdownItems.push(<DropdownItem key={version}>{version}</DropdownItem>);
-    }); // FIXME this is not updating the rendered form?!
+    });
     if (versions.length == 0) {
       setSelectedVersion("no versions available");
     } else {
