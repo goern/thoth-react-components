@@ -11,6 +11,7 @@ import "./pythonChooser.css";
 import { getPythonVersions } from "./ThothGuidanceService";
 
 import "../../node_modules/@patternfly/patternfly/patternfly.min.css";
+import { PythonEnvironment } from "./PythonEnvironment";
 
 interface PythonChooserProps {
   /**
@@ -25,19 +26,20 @@ interface PythonChooserProps {
 export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoadingPythonVersions, setLoadingPythonVersions] = useState(false);
-  const [supportedPythonVersions, setSupportedPythonVersions] = useState<
-    string[]
-  >([]);
-  const [selectedVersion, setSelectedVersion] = React.useState(
-    "no versions available"
-  );
+  const [supportedPythonVersions, setSupportedPythonVersions] =
+    useState<string[]>(versions);
+  const [selectedVersion, setSelectedVersion] =
+    React.useState("<choose a version>");
+
   const getPythonVersionsFromThothService = async () => {
-    console.log("getPythonVersionsFromThothService: loading data from API");
     setLoadingPythonVersions(true);
-    const _versions = await getPythonVersions();
+    const _versions = (await getPythonVersions())
+      .map((version: PythonEnvironment) => {
+        return `${version.python_version} (${version.os_name} ${version.os_version})`;
+      })
+      .sort();
+
     setSupportedPythonVersions(_versions);
-    console.log("supportedPythonVersions from API", _versions);
-    console.log("supportedPythonVersions in state", versions);
     setLoadingPythonVersions(false);
   };
 
@@ -52,28 +54,26 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
     }
   };
 
-  const onSelect = () => {
+  const onSelect = (event: any) => {
     setIsOpen(false);
+    setSelectedVersion(event.target.text);
     onFocus();
   };
 
-  var dropdownItems: DropdownItemProps[] = [];
-
   useEffect(() => {
-    getPythonVersionsFromThothService();
+    if (versions.length === 0) {
+      getPythonVersionsFromThothService();
+    }
   }, []);
 
-  useEffect(() => {
-    console.log("versions", versions);
-    versions.map((version) => {
-      dropdownItems.push(<DropdownItem key={version}>{version}</DropdownItem>);
-    });
-    if (versions.length == 0) {
-      setSelectedVersion("no versions available");
-    } else {
-      setSelectedVersion("<choose version>");
-    }
-  }, [versions]);
+  const dropdownItems = supportedPythonVersions.map((version: string) => {
+    return <DropdownItem key={version}>{version}</DropdownItem>;
+  });
+
+  // TODO - add a loading indicator
+  // TODO - add a "no versions found" message
+  // TODO - add default seletion to be 3.9
+  // TODO - sort supportedPythonVersions
 
   return (
     <div>
@@ -91,6 +91,11 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
         isOpen={isOpen}
         dropdownItems={dropdownItems}
       />
+      <p className="pf-thoth-pythonChooser-spinner">
+        {isLoadingPythonVersions
+          ? "loading supported Python Versions from the Thoth Guidance Service"
+          : ""}
+      </p>
     </div>
   );
 };

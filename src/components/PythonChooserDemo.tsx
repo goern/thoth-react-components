@@ -12,6 +12,8 @@ import { PythonChooser } from "./PythonChooser";
 export const CNBiForm = () => {
   const [selectedPythonVersion, setSelectedPythonVersion] = useState("");
 
+  const onPythonVersionSelect = () => {};
+
   return (
     <div className="container">
       <Form>

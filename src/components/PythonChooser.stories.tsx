@@ -15,11 +15,6 @@ const Template: ComponentStory<typeof PythonChooser> = (args) => {
   return <PythonChooser {...args} />;
 };
 
-export const NoVersionProdived = Template.bind({});
-NoVersionProdived.args = {
-  versions: [],
-};
-
 export const ThreeEight = Template.bind({});
 ThreeEight.args = {
   versions: ["3.8"],
@@ -36,4 +31,9 @@ ThreeEightSelected.args = {
 };
 ThreeEightSelected.play = async () => {
   // TODO
+};
+
+export const NoVersionProdived = Template.bind({});
+NoVersionProdived.args = {
+  versions: [],
 };
