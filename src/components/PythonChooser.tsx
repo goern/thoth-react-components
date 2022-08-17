@@ -73,7 +73,6 @@ export const PythonChooser = ({ versions, ...props }: PythonChooserProps) => {
   // TODO - add a loading indicator
   // TODO - add a "no versions found" message
   // TODO - add default seletion to be 3.9
-  // TODO - sort supportedPythonVersions
 
   return (
     <div>
